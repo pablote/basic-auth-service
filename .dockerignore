@@ -1,0 +1,5 @@
+.idea
+node_modules
+addon-manifest*.json
+app*.yaml
+.env
