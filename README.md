@@ -2,7 +2,7 @@
 
 Basic Auth as an External Authorization service for Envoy Proxy
 
-## configuration
+## Configuration
 
 All configuration is done using env vars. Check `.env` file for a sample configuration.
 
@@ -50,3 +50,7 @@ Sample Envoy config to use this service:
               address: basic-auth-service
               port_value: 10000
 ```
+
+## Docker
+
+This service is available as a docker image at [pablote/basic-auth-service](https://hub.docker.com/r/pablote/basic-auth-service)
