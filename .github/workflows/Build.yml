@@ -39,4 +39,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: latest
+          tags: pablote/basic-auth-service:latest
