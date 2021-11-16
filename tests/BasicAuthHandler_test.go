@@ -49,3 +49,17 @@ func Test_BasicAuthHandler(t *testing.T) {
 		}
 	}
 }
+
+var intResult int
+func Benchmark_BasicAuthHandler(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		target := lib.BasicAuthHandler("admin", "password", []string{"*"}, []string{"*"})
+
+		w := httptest.NewRecorder()
+		r := httptest.NewRequest("GET", "/", nil)
+		r.Header.Set("Authorization", "Basic YWRtaW46cGFzc3dvcmQ=")
+
+		target.ServeHTTP(w, r)
+		intResult = w.Code
+	}
+}
