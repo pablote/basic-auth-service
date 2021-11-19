@@ -6,9 +6,10 @@ Basic Auth as an External Authorization service for Envoy Proxy
 
 All configuration is done using env vars. Check `.env` file for a sample configuration.
 
-* PORT (optional, defaults to `10000`): Listen port
-* BASIC_AUTH_SERVICE_USERNAME (mandatory): Basic authentication username
-* BASIC_AUTH_SERVICE_PASSWORD (mandatory): Basic authentication password
+* PORT (optional, defaults to `10000`): Listen port.
+* BASIC_AUTH_SERVICE_HTPASSWD: List of users in Apache Htpasswd format, remember to escape all `$` characters. If defined, this has preference over username/password. See `.env` for an example.
+* BASIC_AUTH_SERVICE_USERNAME: Basic authentication username.
+* BASIC_AUTH_SERVICE_PASSWORD: Basic authentication password.
 * BASIC_AUTH_SERVICE_HOST_ALLOWLIST (optional, defaults to `*`): Comma separated list of hosts, on glob format, to which authentication will be applied. If the incoming host matches any it will be processed, if not the call will be allowed.
 * BASIC_AUTH_SERVICE_PATH_ALLOWLIST (optional, defaults to `*`): Comma separated list of paths, on glob format, to which authentication will be applied. If the incoming path matches any it will be processed, if not the call will be allowed.
 

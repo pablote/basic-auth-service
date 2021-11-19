@@ -10,7 +10,7 @@ import (
 func main() {
 	conf := config.New()
 
-	http.HandleFunc("/", lib.BasicAuthHandler(conf.Username, conf.Password, conf.HostAllowList, conf.PathAllowList))
+	http.HandleFunc("/", lib.BasicAuthHandler(conf.Username, conf.Password, conf.HtPasswd, conf.HostAllowList, conf.PathAllowList))
 
 	addr := fmt.Sprintf("0.0.0.0:%s", conf.Port)
 	fmt.Printf("listening on %s\n", addr)

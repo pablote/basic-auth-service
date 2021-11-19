@@ -12,14 +12,15 @@ const defaultPort = "10000"
 const prefix = "BASIC_AUTH_SERVICE"
 
 type Configuration struct {
-	Port string
-	Username string
-	Password string
+	Port          string
+	Username      string
+	Password      string
 	HostAllowList []string
 	PathAllowList []string
+	HtPasswd      string
 }
 
-func New () Configuration {
+func New() Configuration {
 	// load .env file
 	err := godotenv.Load()
 	if err == nil {
@@ -32,14 +33,11 @@ func New () Configuration {
 		port = defaultPort
 	}
 
-	username, hasUsername := os.LookupEnv(fmt.Sprintf("%s_USERNAME", prefix))
-	if !hasUsername {
-		log.Panic(fmt.Sprintf("%s_USERNAME is mandatory", prefix))
-	}
-
-	password, hasPassword := os.LookupEnv(fmt.Sprintf("%s_PASSWORD", prefix))
-	if !hasPassword {
-		log.Panic(fmt.Sprintf("%s_PASSWORD is mandatory", prefix))
+	username := os.Getenv(fmt.Sprintf("%s_USERNAME", prefix))
+	password := os.Getenv(fmt.Sprintf("%s_PASSWORD", prefix))
+	htPasswd := os.Getenv(fmt.Sprintf("%s_HTPASSWD", prefix))
+	if !((len(username) > 0 && len(password) > 0) || len(htPasswd) > 0 ){
+		log.Fatal("either USERNAME and PASSWORD or HTPASSWD needs to be defined")
 	}
 
 	hostAllowList, hasHostAllowList := os.LookupEnv(fmt.Sprintf("%s_HOST_ALLOWLIST", prefix))
@@ -47,7 +45,7 @@ func New () Configuration {
 		hostAllowList = "*"
 	}
 
-	hostAllowListAsList := strings.Split(hostAllowList,",")
+	hostAllowListAsList := strings.Split(hostAllowList, ",")
 	for i, host := range hostAllowListAsList {
 		hostAllowListAsList[i] = strings.TrimSpace(host)
 	}
@@ -57,15 +55,16 @@ func New () Configuration {
 		pathAllowList = "*"
 	}
 
-	pathAllowListAsList := strings.Split(pathAllowList,",")
+	pathAllowListAsList := strings.Split(pathAllowList, ",")
 	for i, path := range pathAllowListAsList {
 		pathAllowListAsList[i] = strings.TrimSpace(path)
 	}
 
 	return Configuration{
-		Port: port,
-		Username: username,
-		Password: password,
+		Port:          port,
+		Username:      username,
+		Password:      password,
+		HtPasswd:      htPasswd,
 		HostAllowList: hostAllowListAsList,
 		PathAllowList: pathAllowListAsList,
 	}

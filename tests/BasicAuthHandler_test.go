@@ -10,31 +10,31 @@ func Test_BasicAuthHandler(t *testing.T) {
 	table := []struct {
 		expectedUsername string
 		expectedPassword string
-		authorization string
-		assertCode int
+		authorization    string
+		assertCode       int
 	}{
 		{
 			expectedUsername: "admin",
 			expectedPassword: "password",
-			authorization: "Basic YWRtaW46cGFzc3dvcmQ=", // admin:password
-			assertCode: 200,
+			authorization:    "Basic YWRtaW46cGFzc3dvcmQ=", // admin:password
+			assertCode:       200,
 		},
 		{
 			expectedUsername: "admin",
 			expectedPassword: "admin",
-			authorization: "Basic YWRtaW46cGFzc3dvcmQ=", // admin:password
-			assertCode: 401,
+			authorization:    "Basic YWRtaW46cGFzc3dvcmQ=", // admin:password
+			assertCode:       401,
 		},
 		{
 			expectedUsername: "admin",
 			expectedPassword: "password",
-			authorization: "",
-			assertCode: 401,
+			authorization:    "",
+			assertCode:       401,
 		},
 	}
 
 	for _, row := range table {
-		target := lib.BasicAuthHandler(row.expectedUsername, row.expectedPassword, []string{"*"}, []string{"*"})
+		target := lib.BasicAuthHandler(row.expectedUsername, row.expectedPassword, "", []string{"*"}, []string{"*"})
 
 		w := httptest.NewRecorder()
 		r := httptest.NewRequest("GET", "/", nil)
@@ -51,9 +51,10 @@ func Test_BasicAuthHandler(t *testing.T) {
 }
 
 var intResult int
+
 func Benchmark_BasicAuthHandler(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		target := lib.BasicAuthHandler("admin", "password", []string{"*"}, []string{"*"})
+		target := lib.BasicAuthHandler("admin", "password", "", []string{"*"}, []string{"*"})
 
 		w := httptest.NewRecorder()
 		r := httptest.NewRequest("GET", "/", nil)
