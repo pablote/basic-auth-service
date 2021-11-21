@@ -60,7 +60,7 @@ func New() Configuration {
 		pathAllowListAsList[i] = strings.TrimSpace(path)
 	}
 
-	return Configuration{
+	config := Configuration{
 		Port:          port,
 		Username:      username,
 		Password:      password,
@@ -68,4 +68,7 @@ func New() Configuration {
 		HostAllowList: hostAllowListAsList,
 		PathAllowList: pathAllowListAsList,
 	}
+	fmt.Printf("config: %+v\n", config)
+
+	return config
 }
