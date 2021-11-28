@@ -18,20 +18,24 @@ Sample Envoy config to use this service:
 * On `http_filters`:
 
 ```yaml
-- name: envoy.filters.http.ext_authz
-  typed_config:
-    "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
-    failure_mode_allow: false
-    http_service:
-      server_uri:
-        uri: basic-auth-service:10000
-        cluster: ext-authz
-        timeout: 0.25s
-    include_peer_certificate: true
-    with_request_body:
-      max_request_bytes: 1024
-      allow_partial_message: true
-      pack_as_bytes: true
+  - name: envoy.filters.http.ext_authz
+    typed_config:
+      "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
+      failure_mode_allow: false
+      http_service:
+        server_uri:
+          uri: basic-auth-service:10000
+          cluster: ext-authz
+          timeout: 0.25s
+        authorization_response:
+          allowed_upstream_headers:
+            patterns:
+              - exact: "x-auth-username"
+      include_peer_certificate: true
+      with_request_body:
+        max_request_bytes: 1024
+        allow_partial_message: true
+        pack_as_bytes: true
 ```
 
 * On `clusters`:

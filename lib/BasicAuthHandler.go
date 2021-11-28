@@ -57,24 +57,24 @@ func BasicAuthHandler(expectedUsername, expectedPassword, htpasswd string, hostA
 		// return "WWW-Authenticate" if no auth header or wrong username/password
 		username, password, basicAuthOk := r.BasicAuth()
 		if !basicAuthOk {
-			sendAutheticate(w)
+			sendAuthenticate(w)
 			return
 		}
 
 		// authenticate either using htpasswd or username/password
 		if htpasswdFile != nil {
 			if !htpasswdFile.Match(username, password) {
-				sendAutheticate(w)
+				sendAuthenticate(w)
 				return
 			}
 		} else {
 			if username != expectedUsername || password != expectedPassword {
-				sendAutheticate(w)
+				sendAuthenticate(w)
 				return
 			}
 		}
 
 		// allow request
-		sendOk(w)
+		sendOkWithUser(w, username)
 	}
 }
