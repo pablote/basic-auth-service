@@ -36,6 +36,7 @@ Sample Envoy config to use this service:
         max_request_bytes: 1024
         allow_partial_message: true
         pack_as_bytes: true
+      transport_api_version: V3
 ```
 
 * On `clusters`:
